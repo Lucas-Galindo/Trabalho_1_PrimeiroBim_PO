@@ -4,9 +4,17 @@ public void chamaOrdenacao(char opcao, int[] vetor){
     Lista lista = new Lista();
     lista.arrayToList(vetor,lista);
     lista.exibirLista();
-    if(opcao=='A')
-        lista.InsercaoDireta();
+    switch(opcao){
+        case 'A':
+            lista.InsercaoDireta();
+            break;
+        case 'B':
+            lista.InsercaoBinaria();
+            break;
+        case 'C':
+            break;
 
+    }
     lista.exibirLista();
 
 }

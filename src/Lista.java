@@ -120,6 +120,44 @@ public class Lista {
         return null;
     }
 
+    public void selecaoDireta(){
+
+        Lista lista = inicio, aux,aux2;
+        Lista menor;
+        int posMenor;
+
+        for(int i=0;i<retornaTam(inicio);i++){
+            posMenor = i;
+            menor = posicionaLista(0,i,lista);
+            for(int j = i+1; j<retornaTam(inicio);j++)
+            {
+                aux = posicionaLista(i,j,lista);
+                if(aux.getObjetoInfo().getInfo() < menor.getObjetoInfo().getInfo())
+                {
+                    posMenor = j;
+                    menor.setInfo(aux.getObjetoInfo().getInfo());
+                }
+
+            }
+
+            //vet[i]
+            aux = posicionaLista(0,i,lista);
+
+            //vet[posMenor]
+            //aux2 = posicionaLista(i,posMenor,lista);
+
+            lista = posicionaLista(0,i,lista);
+            lista.setInfo(menor.getObjetoInfo().info);
+
+            lista = posicionaLista(0,posMenor,lista);
+            lista.setInfo(aux.getObjetoInfo().getInfo());
+
+
+
+
+        }
+    }
+
 
     public Info getObjetoInfo() {
         return objetoInfo;
