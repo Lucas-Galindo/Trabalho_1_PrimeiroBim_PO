@@ -1,7 +1,7 @@
 import static java.awt.SystemColor.info;
 
 public class Lista {
-    public Info objetoInfo;
+    public int info;
     public Lista prox;
     public Lista ant;
     public Lista inicio;
@@ -10,8 +10,8 @@ public class Lista {
 
     }
     public Lista(int elemento, Lista prox, Lista ant){
-        Info info = new Info(elemento);
-        this.objetoInfo = info;
+        //Info info = new Info(elemento);
+        this.info = info;
         this.prox = prox;
         this.ant = ant;
     }
@@ -45,7 +45,7 @@ public class Lista {
     public void exibirLista(){
         Lista aux = this;
         while(aux!=null){
-            System.out.println(aux.getObjetoInfo());
+            System.out.println(aux.getInfo());
             aux = aux.getProx();
         }
     }
@@ -54,11 +54,11 @@ public class Lista {
         Lista pi = inicio.getProx(),pPos;
         int aux;
         while(pi!=null){
-            aux = pi.getObjetoInfo().getInfo();
+            aux = pi.getInfo();
             //Aqui o pPos ta apontando pro mesmo endereco de memoria
             pPos = pi;
-            while(pPos!=null && aux<pPos.getAnt().getObjetoInfo().getInfo()){
-                pPos.setInfo(pPos.getAnt().getObjetoInfo().getInfo());
+            while(pPos!=null && aux<pPos.getAnt().getInfo()){
+                pPos.setInfo(pPos.getAnt().getInfo());
                 pPos = pPos.getAnt();
             }
         }
@@ -70,11 +70,11 @@ public class Lista {
         int tam = retornaTam(this);
         int aux;
         for(i=1;i<tam;i++){
-            aux = pi.getObjetoInfo().getInfo();
+            aux = pi.getInfo();
             pos = buscaBinaria(aux);
 
             for(int j = i;pos!=null;j--){
-                pos.setInfo(pos.getAnt().getObjetoInfo().getInfo());
+                pos.setInfo(pos.getAnt().getInfo());
                 pos = pos.getAnt();
             }
         }
@@ -105,8 +105,8 @@ public class Lista {
         posInicio = 0;
         posFim = tam - 1;
         posMeio = tam/2;
-        while(posInicio<posFim && aux!=lista.getObjetoInfo().getInfo()){
-            if(aux<lista.getObjetoInfo().getInfo())
+        while(posInicio<posFim && aux!=lista.getInfo()){
+            if(aux<lista.getInfo())
                 posFim = posMeio - 1;
             else
                 posInicio = posMeio + 1;
@@ -115,7 +115,7 @@ public class Lista {
 
         }
         lista = posicionaLista(posInicio, posMeio,lista);
-        if(aux>lista.getObjetoInfo().getInfo())
+        if(aux>lista.getInfo())
             return lista;
         return null;
     }
@@ -132,10 +132,10 @@ public class Lista {
             for(int j = i+1; j<retornaTam(inicio);j++)
             {
                 aux = posicionaLista(i,j,lista);
-                if(aux.getObjetoInfo().getInfo() < menor.getObjetoInfo().getInfo())
+                if(aux.getInfo() < menor.getInfo())
                 {
                     posMenor = j;
-                    menor.setInfo(aux.getObjetoInfo().getInfo());
+                    menor.setInfo(aux.getInfo());
                 }
 
             }
@@ -147,10 +147,10 @@ public class Lista {
             //aux2 = posicionaLista(i,posMenor,lista);
 
             lista = posicionaLista(0,i,lista);
-            lista.setInfo(menor.getObjetoInfo().info);
+            lista.setInfo(menor.info);
 
             lista = posicionaLista(0,posMenor,lista);
-            lista.setInfo(aux.getObjetoInfo().getInfo());
+            lista.setInfo(aux.getInfo());
 
 
         }
@@ -177,9 +177,9 @@ public class Lista {
             pInicio= inicio;
             while(pInicio!=pFim){
 
-                if(pInicio.getObjetoInfo().getInfo() > pInicio.getProx().getObjetoInfo().getInfo()){
-                    aux = pInicio.getObjetoInfo().getInfo();
-                    pInicio.setInfo(pInicio.getProx().getObjetoInfo().getInfo());
+                if(pInicio.getInfo() > pInicio.getProx().getInfo()){
+                    aux = pInicio.getInfo();
+                    pInicio.setInfo(pInicio.getProx().getInfo());
                     pInicio.getProx().setInfo(aux);
                 }
                 pInicio = pInicio.getProx();
@@ -190,12 +190,12 @@ public class Lista {
     }
 
 
-    public Info getObjetoInfo() {
-        return objetoInfo;
+    public int getInfo() {
+        return info;
     }
 
     public void setInfo(int elemento) {
-        this.objetoInfo = new Info(elemento);
+        this.info = elemento;
     }
 
     public Lista getProx() {
