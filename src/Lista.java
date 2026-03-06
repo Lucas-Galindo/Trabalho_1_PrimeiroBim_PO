@@ -153,7 +153,38 @@ public class Lista {
             lista.setInfo(aux.getObjetoInfo().getInfo());
 
 
+        }
+    }
 
+    public Lista retornaFim(Lista lista){
+        Lista ant = null;
+        while(lista!=null){
+            ant = lista;
+            lista = lista.getProx();
+        }
+        return ant;
+    }
+
+
+    public void bolha(){
+        int aux;
+        Lista lista = inicio;
+
+        boolean flag = true;
+        Lista pInicio,pFim = retornaFim(lista);
+        while(pFim!=inicio && flag == true){
+            flag = false;
+            pInicio= inicio;
+            while(pInicio!=pFim){
+
+                if(pInicio.getObjetoInfo().getInfo() > pInicio.getProx().getObjetoInfo().getInfo()){
+                    aux = pInicio.getObjetoInfo().getInfo();
+                    pInicio.setInfo(pInicio.getProx().getObjetoInfo().getInfo());
+                    pInicio.getProx().setInfo(aux);
+                }
+                pInicio = pInicio.getProx();
+            }
+            pFim = pFim.getAnt();
 
         }
     }
