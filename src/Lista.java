@@ -1,5 +1,3 @@
-import static java.awt.SystemColor.info;
-
 public class Lista {
     public int info;
     public Lista prox;
@@ -11,7 +9,7 @@ public class Lista {
     }
     public Lista(int elemento, Lista prox, Lista ant){
         //Info info = new Info(elemento);
-        this.info = info;
+        this.info = elemento;
         this.prox = prox;
         this.ant = ant;
     }
@@ -43,7 +41,7 @@ public class Lista {
     }
 
     public void exibirLista(){
-        Lista aux = this;
+        Lista aux = inicio;
         while(aux!=null){
             System.out.println(aux.getInfo());
             aux = aux.getProx();
@@ -57,31 +55,37 @@ public class Lista {
             aux = pi.getInfo();
             //Aqui o pPos ta apontando pro mesmo endereco de memoria
             pPos = pi;
-            while(pPos!=null && aux<pPos.getAnt().getInfo()){
+            while(pPos!=inicio && aux<pPos.getAnt().getInfo()){
                 pPos.setInfo(pPos.getAnt().getInfo());
                 pPos = pPos.getAnt();
             }
+            pPos.setInfo(aux);
+            pi = pi.getProx();
         }
     }
 
-    public void InsercaoBinaria(){
-        Lista pPos, pi = this, pos;
-        int i;
-        int tam = retornaTam(this);
-        int aux;
-        for(i=1;i<tam;i++){
-            aux = pi.getInfo();
-            pos = buscaBinaria(aux);
-
-            for(int j = i;pos!=null;j--){
-                pos.setInfo(pos.getAnt().getInfo());
-                pos = pos.getAnt();
-            }
-        }
-    }
+//    public void InsercaoBinaria(){
+//        Lista aux = null, aux2 = null;
+//        Lista lista = inicio;
+//        int pos;
+//        for(int i= 1 ;i<retornaTam(inicio); i++){
+//            lista = posicionaLista(0,i,lista);
+//            aux = lista;
+//            pos = buscaBinaria(aux.getInfo(),i);
+//            for(int j = i; j>pos; j--){
+//                lista = posicionaLista(0,j,lista);
+//                lista.setInfo(lista.getAnt().getInfo());
+//
+//            }
+//
+//            lista = posicionaLista(0,pos,lista);
+//            lista.setInfo(aux.getInfo());
+//
+//        }
+//    }
 
     public int retornaTam(Lista lista){
-        int qtde = 1;
+        int qtde = 0;
         while(lista!=null){
             lista = lista.getProx();
             qtde++;
@@ -89,74 +93,117 @@ public class Lista {
         return qtde;
     }
 
-    public Lista posicionaLista(int posInicial, int posDesejada,Lista lista){
+    public Lista posicionaLista(int posInicial, int posDesejada, Lista lista){
         int posAtual = posInicial;
-        while(posAtual <= posDesejada){
+
+        while(posAtual < posDesejada && lista != null){
             posAtual++;
             lista = lista.getProx();
         }
+
         return lista;
     }
-    public Lista buscaBinaria(int aux){
 
-        int posInicio, posFim, posMeio,tam;
-        Lista lista = this.inicio;
-        tam = retornaTam(lista);
-        posInicio = 0;
-        posFim = tam - 1;
-        posMeio = tam/2;
-        while(posInicio<posFim && aux!=lista.getInfo()){
-            if(aux<lista.getInfo())
-                posFim = posMeio - 1;
-            else
-                posInicio = posMeio + 1;
-            posMeio = (posInicio+posFim)/2;
-            lista = posicionaLista(posInicio, posMeio,lista);
+//    public int buscaBinaria(int aux,int tam){
+//
+//        int posInicio, posFim, posMeio;
+//        Lista lista = inicio;
+//        posInicio = 0;
+//        posFim = tam - 1;
+//        posMeio = tam/2;
+//
+//    }
 
-        }
-        lista = posicionaLista(posInicio, posMeio,lista);
-        if(aux>lista.getInfo())
-            return lista;
-        return null;
-    }
 
     public void selecaoDireta(){
 
-        Lista lista = inicio, aux,aux2;
+        Lista lista = inicio , aux;
         Lista menor;
         int posMenor;
+        for(int i=0;i<retornaTam(inicio)-1;i++){
+            menor = posicionaLista(0,i,inicio);
 
-        for(int i=0;i<retornaTam(inicio);i++){
             posMenor = i;
-            menor = posicionaLista(0,i,lista);
             for(int j = i+1; j<retornaTam(inicio);j++)
             {
-                aux = posicionaLista(i,j,lista);
+                aux = posicionaLista(i,j,inicio);
                 if(aux.getInfo() < menor.getInfo())
                 {
+                    menor = aux;
                     posMenor = j;
-                    menor.setInfo(aux.getInfo());
+                    System.out.println("if" +menor.getInfo());
                 }
-
             }
 
-            //vet[i]
-            aux = posicionaLista(0,i,lista);
+//            aux = posicionaLista(0,i,inicio);
+//            lista = posicionaLista(0,posMenor,inicio);
+//            lista.setInfo(aux.getInfo());
+//
+//            lista = posicionaLista(0,i,inicio);
+//            lista.setInfo(menor.getInfo());
 
-            //vet[posMenor]
-            //aux2 = posicionaLista(i,posMenor,lista);
-
-            lista = posicionaLista(0,i,lista);
-            lista.setInfo(menor.info);
-
-            lista = posicionaLista(0,posMenor,lista);
-            lista.setInfo(aux.getInfo());
-
+            aux = posicionaLista(0,i,inicio);
+            int tmp = aux.getInfo();
+            aux.setInfo(menor.getInfo());
+            menor.setInfo(tmp);
 
         }
+        lista.exibirLista();
     }
 
-    public Lista retornaFim(Lista lista){
+
+    //Essa ordenação funciona somente para casos em que se SABE a PRIORI a qual
+    // os elementos já estão quase em ORDEM
+    public void shakeSort(){
+        Lista aux = null;
+        Lista lista = inicio;
+        Lista ini = inicio, fim = retornaFimLista(lista);
+        boolean flag = true;
+        while(ini != fim && flag){
+            flag = false;
+            for(int i= 0 ; i< retornaTam(lista); i++){
+                lista = posicionaLista(0,i,lista);
+                if(lista.getInfo() > lista.getProx().getInfo()){
+                    aux = lista;
+                    lista.setInfo(lista.getProx().getInfo());
+                    lista.getProx().setInfo(aux.getInfo());
+                    flag = true;
+
+                }
+            }
+            fim = fim.getAnt();
+
+            if(flag){
+                flag = false;
+                for(int i = retornaPosLista(fim); i > retornaPosLista(ini) ; i--){
+                    lista = posicionaLista(0,i,lista);
+                    if(lista.getInfo() < lista.getAnt().getInfo()){
+                        aux = lista;
+                        lista.setInfo(lista.getAnt().getInfo());
+                        lista.getAnt().setInfo(aux.getInfo());
+                        flag = true;
+                    }
+                }
+                ini = ini.getProx();
+            }
+        }
+
+    }
+
+    public int retornaPosLista(Lista procurado){
+        Lista lista = inicio;
+        int pos = 0;
+        while(lista.getInfo() != procurado.getInfo()) {
+            lista = lista.getProx();
+            pos++;
+        }
+        if(lista.getInfo() == procurado.getInfo())
+            return pos;
+        return -1;
+
+    }
+
+    public Lista retornaFimLista(Lista lista){
         Lista ant = null;
         while(lista!=null){
             ant = lista;
@@ -171,7 +218,7 @@ public class Lista {
         Lista lista = inicio;
 
         boolean flag = true;
-        Lista pInicio,pFim = retornaFim(lista);
+        Lista pInicio,pFim = retornaFimLista(lista);
         while(pFim!=inicio && flag == true){
             flag = false;
             pInicio= inicio;

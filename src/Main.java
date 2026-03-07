@@ -3,15 +3,23 @@ public void chamaOrdenacao(char opcao, int[] vetor){
 
     Lista lista = new Lista();
     lista.arrayToList(vetor,lista);
-    lista.exibirLista();
+
     switch(opcao){
         case 'A':
             lista.InsercaoDireta();
             break;
         case 'B':
-            lista.InsercaoBinaria();
+//            lista.InsercaoBinaria();
             break;
         case 'C':
+            lista.selecaoDireta();
+            break;
+
+        case 'D':
+            lista.bolha();
+            break;
+        case 'E':
+            lista.shakeSort();
             break;
 
     }
@@ -21,7 +29,8 @@ public void chamaOrdenacao(char opcao, int[] vetor){
 
 void main(){
 
-    int[] vetor = {6,4,7,8,3,2,9,1}; //8 Elementos
+    int[] vetor = {6,4,2,9,1}; //8 Elementos
+//    int[] vetor = {6,4,7,8,3,2,9,1};
     char opcao='1';
     Scanner input = new Scanner(System.in);
 
