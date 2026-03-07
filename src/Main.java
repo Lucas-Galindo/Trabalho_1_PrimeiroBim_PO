@@ -9,7 +9,7 @@ public void chamaOrdenacao(char opcao, int[] vetor){
             lista.InsercaoDireta();
             break;
         case 'B':
-//            lista.InsercaoBinaria();
+            lista.InsercaoBinaria();
             break;
         case 'C':
             lista.selecaoDireta();
@@ -44,7 +44,7 @@ void main(){
         System.out.println("0...Sair");
         System.out.println("Opcao: ");
         opcao = input.next().charAt(0);
-        Character.toUpperCase(opcao);
+        opcao = Character.toUpperCase(opcao);
         chamaOrdenacao(opcao, vetor);
     }
 
