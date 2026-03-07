@@ -11,7 +11,7 @@ public class Lista {
     }
     public Lista(int elemento, Lista prox, Lista ant){
         //Info info = new Info(elemento);
-        this.info = info;
+        this.info = elemento;
         this.prox = prox;
         this.ant = ant;
     }
