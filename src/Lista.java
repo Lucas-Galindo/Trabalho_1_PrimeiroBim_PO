@@ -16,7 +16,7 @@ public class Lista {
 
     public void arrayToList(int[] vetor,Lista lista){
 
-        Lista  aux = null;
+        Lista  aux;
 
         for(int i = 0; i < vetor.length; i++){
             Lista novo = new Lista();
@@ -202,6 +202,47 @@ public class Lista {
 
     }
 
+    public void shellsort(){
+        int pos, pos_dist, dist = 1;
+        int TL = retornaTam(inicio);
+        Lista lista = inicio, auxLista, auxListaPosDist;
+        while(dist<TL)
+            dist = dist * 3 + 1;
+        dist = dist/3;
+        while(dist>0){
+            for(int i = dist; i< TL; i++){
+
+                lista = posicionaLista(0,i,inicio);
+                auxLista = buscaExaustiva(lista.getInfo());
+                pos = i;
+                //pos_dist = pos - dist;
+
+                lista = posicionaLista(0,pos - dist,inicio);
+                while(pos >= dist && auxLista.getInfo() < lista.getInfo()){
+
+                    lista = posicionaLista(0,pos,lista);
+                    auxListaPosDist = posicionaLista(0,pos - dist,lista);
+                    lista.setInfo(auxListaPosDist.getInfo());
+
+                    lista = posicionaLista(0,pos - dist,inicio);
+                    pos = pos - dist;
+
+                }
+                lista = posicionaLista(0,pos,inicio);
+                lista.setInfo(auxLista.getInfo());
+            }
+            dist = dist/3;
+        }
+    }
+
+    public Lista buscaExaustiva(int chave){
+        Lista lista = inicio;
+        while(lista!=null && lista.getInfo()!=chave)
+            lista = lista.getProx();
+        if(lista.getInfo()==chave)
+            return lista;
+        return null;
+    }
     public Lista retornaFimLista(Lista lista){
         Lista ant = null;
         while(lista!=null){
