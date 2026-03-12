@@ -21,6 +21,12 @@ public void chamaOrdenacao(char opcao, int[] vetor){
         case 'E':
             lista.shakeSort();
             break;
+        case 'F':
+            lista.heap();
+            break;
+        case 'G':
+            lista.shellsort();
+            break;
 
     }
     lista.exibirLista();
