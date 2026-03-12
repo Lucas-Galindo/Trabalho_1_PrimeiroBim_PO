@@ -14,7 +14,6 @@ public void chamaOrdenacao(char opcao, int[] vetor){
         case 'C':
             lista.selecaoDireta();
             break;
-
         case 'D':
             lista.bolha();
             break;
@@ -35,8 +34,8 @@ public void chamaOrdenacao(char opcao, int[] vetor){
 
 void main(){
 
-    int[] vetor = {6,4,2,9,1}; //8 Elementos
-//    int[] vetor = {6,4,7,8,3,2,9,1};
+    //int[] vetor = {6,4,2,9,1}; //8 Elementos
+    int[] vetor = {6,4,7,8,3,2,9,1,13,17,19,28,18,30,35,32,98,95,94};
     char opcao='1';
     Scanner input = new Scanner(System.in);
 
