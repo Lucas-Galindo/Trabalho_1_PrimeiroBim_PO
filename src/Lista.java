@@ -243,6 +243,44 @@ public class Lista {
             return lista;
         return null;
     }
+
+    public void heap(){
+        int tl = retornaTam(inicio);
+        Lista lista = inicio;
+        int posPai, posFE,posFD = 0, posMaior = 0;
+        Lista FE,FD,maiorF,pai,aux;
+        while(tl > 1){
+            posPai = retornaPosLista(posicionaLista(0,tl/2-1,lista));
+            while(posPai >= 0){
+                posFE = posPai*2+1;
+                FE = posicionaLista(0,posPai*2+1,lista);
+                posFD = posFE+1;
+                FD = posicionaLista(0,posFE+1,lista);
+                maiorF = FE;
+
+                if(posFD<tl && FD.getInfo()>FE.getInfo()){
+                    maiorF = FD;
+                    posMaior = posFD;
+                }
+                pai = posicionaLista(0,posPai,lista);
+                if(maiorF.getInfo()>pai.getInfo()){
+                    aux = posicionaLista(0,posPai,lista);
+                    pai = posicionaLista(0,posPai,lista);
+                    maiorF = posicionaLista(0,posMaior,lista);
+
+                    pai.setInfo(maiorF.getInfo());
+                    maiorF.setInfo(aux.getInfo());
+                }
+                posPai--;
+            }
+            aux = inicio;
+            lista = posicionaLista(0,tl-1,lista);
+            inicio.setInfo(lista.getInfo());
+            lista.setInfo(aux.getInfo());
+            tl--;
+
+        }
+    }
     public Lista retornaFimLista(Lista lista){
         Lista ant = null;
         while(lista!=null){

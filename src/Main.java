@@ -41,6 +41,8 @@ void main(){
         System.out.println("C...Seleção Direta");
         System.out.println("D...Bolha");
         System.out.println("E...Shake");
+        System.out.println("F...Heap Sort");
+        System.out.println("G...Shell Sort");
         System.out.println("0...Sair");
         System.out.println("Opcao: ");
         opcao = input.next().charAt(0);
