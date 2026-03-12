@@ -253,9 +253,9 @@ public class Lista {
             posPai = retornaPosLista(posicionaLista(0,tl/2-1,lista));
             while(posPai >= 0){
                 posFE = posPai*2+1;
-                FE = posicionaLista(0,posPai*2+1,lista);
+                FE = posicionaLista(0,posFE,lista);
                 posFD = posFE+1;
-                FD = posicionaLista(0,posFE+1,lista);
+                FD = posicionaLista(0,posFD,lista);
                 maiorF = FE;
 
                 if(posFD<tl && FD.getInfo()>FE.getInfo()){
