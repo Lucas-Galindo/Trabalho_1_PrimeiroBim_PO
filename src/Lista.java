@@ -53,8 +53,6 @@ public class Lista {
         while(pi!=null){
             aux = pi.getInfo();
             pPos = pi;
-            // Corrigido: era 'pPos!=inicio', o que impedia insercao na posicao 0.
-            // A condicao correta verifica se ainda existe um predecessor.
             while(pPos.getAnt() != null && aux<pPos.getAnt().getInfo()){
                 pPos.setInfo(pPos.getAnt().getInfo());
                 pPos = pPos.getAnt();
@@ -76,13 +74,10 @@ public class Lista {
     public void InsercaoBinaria(){
         int tam = retornaTam(inicio);
         for(int i = 1; i < tam; i++){
-            // Corrigido: sempre parte de 'inicio' como referencia fixa
             Lista nodoI = posicionaLista(0, i, inicio);
-            // Corrigido: era 'Lista aux', perdendo o valor antes de usar
             int aux = nodoI.getInfo();
             int pos = buscaBinaria(aux, i);
             for(int j = i; j > pos; j--){
-                // Corrigido: sempre parte de 'inicio' como referencia fixa
                 Lista nodoJ = posicionaLista(0, j, inicio);
                 nodoJ.setInfo(nodoJ.getAnt().getInfo());
             }
@@ -92,7 +87,6 @@ public class Lista {
     }
 
     public int buscaBinaria(int aux, int tam){
-        // Corrigido: metodo estava vazio; implementada a busca binaria na parte ja ordenada [0..tam-1]
         int posInicio = 0;
         int posFim = tam - 1;
         int posMeio;
@@ -108,6 +102,7 @@ public class Lista {
 
     public Lista posicionaLista(int posInicial, int posDesejada, Lista lista){
         int posAtual = posInicial;
+        //Lista lista = cabeca;
 
         while(posAtual < posDesejada && lista != null){
             posAtual++;
@@ -128,7 +123,6 @@ public class Lista {
             posMenor = i;
             for(int j = i+1; j<retornaTam(inicio);j++)
             {
-                // Corrigido: era posicionaLista(i,j,inicio), acumulando posicao relativa errada
                 aux = posicionaLista(0,j,inicio);
                 if(aux.getInfo() < menor.getInfo())
                 {
@@ -149,14 +143,12 @@ public class Lista {
     //Essa ordenação funciona somente para casos em que se SABE a PRIORI a qual
     // os elementos já estão quase em ORDEM
     public void shakeSort(){
-        // Corrigido: era 'Lista aux', swap por referencia corrupia o valor salvo
         int aux;
         Lista lista = inicio;
         Lista ini = inicio, fim = retornaFimLista(lista);
         boolean flag = true;
         while(ini != fim && flag){
             flag = false;
-            // Corrigido: era for+posicionaLista acumulando posicao relativa errada; substituido por ponteiro direto
             Lista cur = ini;
             while(cur != fim){
                 if(cur.getInfo() > cur.getProx().getInfo()){
@@ -191,7 +183,6 @@ public class Lista {
     public int retornaPosLista(Lista procurado){
         Lista lista = inicio;
         int pos = 0;
-        // Corrigido: era comparacao por valor (.getInfo()), dois nos com mesmo inteiro dariam resultado errado
         while(lista != null && lista != procurado){
             lista = lista.getProx();
             pos++;
@@ -244,42 +235,50 @@ public class Lista {
         return null;
     }
 
+    public boolean nula(Lista lista){
+        return lista == null;
+    }
     public void heap(){
         int tl = retornaTam(inicio);
+        Lista pai, F1,F2,maiorF = null,aux=null,fim=null;
+        int posPai,posF1,posF2,posMaiorF,auxElemento;
         Lista lista = inicio;
-        int posPai, posFE,posFD = 0, posMaior = 0;
-        Lista FE,FD,maiorF,pai,aux;
-        while(tl > 1){
-            posPai = retornaPosLista(posicionaLista(0,tl/2-1,lista));
-            while(posPai >= 0){
-                posFE = posPai*2+1;
-                FE = posicionaLista(0,posFE,lista);
-                posFD = posFE+1;
-                FD = posicionaLista(0,posFD,lista);
-                maiorF = FE;
+        while(tl>1){
+            for(posPai = tl/2-1;posPai>=0;posPai--){
+                posF1 = 2*posPai+1;
+                posF2 = posF1+1;
+                posMaiorF = posF1;
 
-                if(posFD<tl && FD.getInfo()>FE.getInfo()){
-                    maiorF = FD;
-                    posMaior = posFD;
-                }
-                pai = posicionaLista(0,posPai,lista);
-                if(maiorF.getInfo()>pai.getInfo()){
-                    aux = posicionaLista(0,posPai,lista);
-                    pai = posicionaLista(0,posPai,lista);
-                    maiorF = posicionaLista(0,posMaior,lista);
+                F1 = posicionaLista(0,posF1,inicio);
+                F2 = posicionaLista(0,posF2,inicio);
+                if(nula(F1) || nula(F2))
+                    System.out.println("F1 ou F2 é NULL");
 
-                    pai.setInfo(maiorF.getInfo());
-                    maiorF.setInfo(aux.getInfo());
+                if(posF2 < tl && F1.getInfo() < F2.getInfo())
+                {
+                    //maiorF.setInfo(F2.getInfo());
+                    //maiorF = F2;
+                    posMaiorF = posF2;
                 }
-                posPai--;
+                maiorF = posicionaLista(0,posMaiorF,inicio);
+                pai = posicionaLista(0,posPai,inicio);
+                if(maiorF.getInfo() > pai.getInfo()){
+                    auxElemento = maiorF.getInfo();
+
+
+                    pai.setInfo(auxElemento);
+
+                }
             }
-            aux = inicio;
-            lista = posicionaLista(0,tl-1,lista);
-            inicio.setInfo(lista.getInfo());
-            lista.setInfo(aux.getInfo());
             tl--;
-
+            Lista inicioAux = posicionaLista(0,0,inicio);
+            aux = inicioAux;
+            //aux.setInfo(inicio.getInfo());
+            fim = posicionaLista(0,tl,inicio);
+            inicioAux.setInfo(fim.getInfo());
+            fim.setInfo(aux.getInfo());
         }
+
     }
     public Lista retornaFimLista(Lista lista){
         Lista ant = null;
