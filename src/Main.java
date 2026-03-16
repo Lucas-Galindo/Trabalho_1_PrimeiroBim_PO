@@ -48,6 +48,17 @@ void main(){
         System.out.println("E...Shake");
         System.out.println("F...Heap Sort");
         System.out.println("G...Shell Sort");
+        System.out.println("H...Quick");
+        System.out.println("I...Quick com pivo");
+        System.out.println("J...Fusao Direta");
+        System.out.println("K...Merge");
+        System.out.println("L...Merge");
+        System.out.println("M...CoutingSort");
+        System.out.println("N...Bucket");
+        System.out.println("O...Radix");
+        System.out.println("P...Comb");
+        System.out.println("Q...Gnome");
+        System.out.println("R...Tim");
         System.out.println("0...Sair");
         System.out.println("Opcao: ");
         opcao = input.next().charAt(0);
