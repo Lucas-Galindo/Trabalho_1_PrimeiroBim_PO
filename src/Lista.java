@@ -313,6 +313,47 @@ public class Lista {
         }
     }
 
+    public void countingSort(){
+        int i,j;
+        Lista lista = inicio, maior = lista;
+        lista = lista.getProx();
+
+        //Encontra o maior valor
+        while(lista!=null){
+            if(lista.getInfo() > maior.getInfo())
+                maior = lista;
+            lista = lista.getProx();
+        }
+
+        //Vetor destinado a contagem de cada elemento
+        int[] contagem = new int[maior.getInfo()];
+        lista = inicio;
+
+        //Adicionando a quantidade de vezes que o elemento aparece no lugar
+        while(lista!=null){
+            contagem[lista.getInfo() - 1] = contagem[lista.getInfo() - 1]+1;
+            lista = lista.getProx();
+        }
+
+        //Fazendo somatorio dentro do vetor
+        for(i=1;i<contagem.length;i++)
+            contagem[i] = contagem[i]+contagem[i-1];
+
+        //Cria um vetor do tamanho da lista
+        int[] grandeVetor = new int[retornaTam(inicio)];
+
+        //Vai posicionando cada elemento em seu respectivo lugar em vetorGrande
+        lista = retornaFimLista(inicio);
+        while(lista!=null){
+            grandeVetor[contagem[lista.getInfo()-1]-1] = lista.getInfo();
+            contagem[lista.getInfo()-1] = contagem[lista.getInfo()-1]-1;
+            lista=lista.getAnt();
+        }
+        for(i=0,lista=inicio;lista!=null;i++,lista=lista.getProx())
+            lista.setInfo(grandeVetor[i]);
+
+    }
+
 
     public int getInfo() {
         return info;
