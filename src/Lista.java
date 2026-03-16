@@ -194,33 +194,29 @@ public class Lista {
     }
 
     public void shellsort(){
-        int pos, pos_dist, dist = 1;
+        int pos, pos_dist, dist = 1,ele;
         int TL = retornaTam(inicio);
-        Lista lista = inicio, auxLista, auxListaPosDist;
+        Lista lista = inicio, auxLista, auxPosDist = new Lista();
         while(dist<TL)
             dist = dist * 3 + 1;
         dist = dist/3;
         while(dist>0){
             for(int i = dist; i< TL; i++){
 
-                lista = posicionaLista(0,i,inicio);
-                auxLista = buscaExaustiva(lista.getInfo());
+                auxLista = posicionaLista(0,i,inicio);
+                ele = auxLista.getInfo();
                 pos = i;
-                //pos_dist = pos - dist;
+                auxPosDist = posicionaLista(0,pos-dist,inicio);
+                while(pos - dist >=0 && ele < auxPosDist.getInfo()){
+                    auxLista = posicionaLista(0,pos,inicio);
+                    auxLista.setInfo(auxPosDist.getInfo());
 
-                lista = posicionaLista(0,pos - dist,inicio);
-                while(pos >= dist && auxLista.getInfo() < lista.getInfo()){
-
-                    lista = posicionaLista(0,pos,lista);
-                    auxListaPosDist = posicionaLista(0,pos - dist,lista);
-                    lista.setInfo(auxListaPosDist.getInfo());
-
-                    lista = posicionaLista(0,pos - dist,inicio);
                     pos = pos - dist;
-
+                    if(pos-dist >= 0)
+                        auxPosDist = posicionaLista(0, pos-dist,inicio);
                 }
-                lista = posicionaLista(0,pos,inicio);
-                lista.setInfo(auxLista.getInfo());
+                auxLista = posicionaLista(0,pos,inicio);
+                auxLista.setInfo(ele);
             }
             dist = dist/3;
         }
