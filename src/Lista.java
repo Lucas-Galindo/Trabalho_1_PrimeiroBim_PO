@@ -239,45 +239,47 @@ public class Lista {
         return lista == null;
     }
     public void heap(){
-        int tl = retornaTam(inicio);
-        Lista pai, F1,F2,maiorF = null,aux=null,fim=null;
-        int posPai,posF1,posF2,posMaiorF,auxElemento;
-        Lista lista = inicio;
-        while(tl>1){
-            for(posPai = tl/2-1;posPai>=0;posPai--){
-                posF1 = 2*posPai+1;
-                posF2 = posF1+1;
-                posMaiorF = posF1;
+      int posFim, tl = retornaTam(inicio);
+      posFim = tl;
+      int posPai, posFE, posFD, posMaiorF, auxEle;
+      Lista FE = new Lista();
+      Lista FD = new Lista();
+      Lista maiorF = new Lista();
+      Lista pai = new Lista();
+      Lista fim = new Lista();
 
-                F1 = posicionaLista(0,posF1,inicio);
-                F2 = posicionaLista(0,posF2,inicio);
-                if(nula(F1) || nula(F2))
-                    System.out.println("F1 ou F2 é NULL");
+      while(tl > 1){
+          posPai = tl/2-1;
+          while(posPai>=0){
+              posFE = 2*posPai+1;
+              posFD = posFE+1;
+              if(posFD<tl){
+                  FE = posicionaLista(0,posFE,inicio);
+                  FD = posicionaLista(0,posFD,inicio);
+                  if(FE.getInfo() > FD.getInfo())
+                    posMaiorF = posFE;
+                  else posMaiorF = posFD;
 
-                if(posF2 < tl && F1.getInfo() < F2.getInfo())
-                {
-                    //maiorF.setInfo(F2.getInfo());
-                    //maiorF = F2;
-                    posMaiorF = posF2;
-                }
-                maiorF = posicionaLista(0,posMaiorF,inicio);
-                pai = posicionaLista(0,posPai,inicio);
-                if(maiorF.getInfo() > pai.getInfo()){
-                    auxElemento = maiorF.getInfo();
+              }
+              else posMaiorF = posFE;
 
+              pai = posicionaLista(0,posPai,inicio);
+              maiorF = posicionaLista(0,posMaiorF,inicio);
+              if(pai.getInfo() < maiorF.getInfo()){
+                  auxEle = pai.getInfo();
+                  pai.setInfo(maiorF.getInfo());
+                  maiorF.setInfo(auxEle);
+              }
+              posPai--;
+          }
+          tl--;
+          fim = posicionaLista(0,posFim-1,inicio);
+          auxEle = fim.getInfo();
+          fim.setInfo(inicio.getInfo());
+          inicio.setInfo(auxEle);
+          posFim--;
+      }
 
-                    pai.setInfo(auxElemento);
-
-                }
-            }
-            tl--;
-            Lista inicioAux = posicionaLista(0,0,inicio);
-            aux = inicioAux;
-            //aux.setInfo(inicio.getInfo());
-            fim = posicionaLista(0,tl,inicio);
-            inicioAux.setInfo(fim.getInfo());
-            fim.setInfo(aux.getInfo());
-        }
 
     }
     public Lista retornaFimLista(Lista lista){
@@ -292,10 +294,10 @@ public class Lista {
 
     public void bolha(){
         int aux;
-        Lista lista = inicio;
+        //Lista lista = inicio;
 
         boolean flag = true;
-        Lista pInicio,pFim = retornaFimLista(lista);
+        Lista pInicio,pFim = retornaFimLista(inicio);
         while(pFim!=inicio && flag == true){
             flag = false;
             pInicio= inicio;
