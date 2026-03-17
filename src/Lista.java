@@ -262,7 +262,6 @@ public class Lista {
                     aux = pInicio.getInfo();
                     pInicio.setInfo(pInicio.getProx().getInfo());
                     pInicio.getProx().setInfo(aux);
-                    // Corrigido: estava faltando; sem isso o laco externo encerrava apos 1 passagem
                     flag = true;
                 }
                 pInicio = pInicio.getProx();
@@ -270,6 +269,121 @@ public class Lista {
             pFim = pFim.getAnt();
 
         }
+    }
+
+    public void quickSemPivo(){
+        quickSP(0,retornaTam(inicio)-1);
+    }
+    public void quickSP(int ini, int fim){
+        int i = ini, j = fim;
+        Lista listaI = new Lista();
+        Lista listaJ = new Lista();
+        boolean flag = true;
+        while(i<j){
+
+            listaI = posicionaLista(0,i,inicio);
+            listaJ = posicionaLista(0,j,inicio);
+            if(flag)
+            {
+                while(i<j && listaI.getInfo() <= listaJ.getInfo())
+                {
+                    i++;
+                    listaI = posicionaLista(0,i,inicio);
+                }
+
+            }
+            else {
+                while(i<j && listaI.getInfo() <= listaJ.getInfo())
+                {
+                    j--;
+                    listaJ = posicionaLista(0,j,inicio);
+                }
+            }
+            int aux = listaI.getInfo();
+            listaI.setInfo(listaJ.getInfo());
+            listaJ.setInfo(aux);
+            flag = !flag;
+        }
+        if(ini < i-1)
+            quickSP(ini,i-1);
+        if(j+1<fim)
+            quickSP(j+1,fim);
+    }
+
+    public void quickComPivo(){
+        quickP(0,retornaTam(inicio)-1);
+    }
+    public void quickP(int ini, int fim){
+        int i = ini, j = fim, pivo = (ini+fim)/2;
+        int aux;
+        Lista listaI = new Lista();
+        Lista listaJ = new Lista();
+        Lista listaPivo = new Lista();
+        while(i<j){
+
+            listaI = posicionaLista(0,i,inicio);
+            listaJ = posicionaLista(0,j,inicio);
+            listaPivo = posicionaLista(0,pivo,inicio);
+            while(listaI.getInfo()<listaPivo.getInfo()){
+                i++;
+                listaI = posicionaLista(0,i,inicio);
+            }
+            while(listaJ.getInfo()>listaPivo.getInfo()){
+                j--;
+                listaJ = posicionaLista(0,j,inicio);
+            }
+            if(i<=j){
+                aux = posicionaLista(0,i,inicio).getInfo();
+                listaI.setInfo(listaJ.getInfo());
+                listaJ.setInfo(aux);
+                i++;
+                j--;
+            }
+            if(ini<j)
+                quickP(ini,j);
+            if(i<fim)
+                quickP(i,fim);
+        }
+    }
+    public void countingSort(){
+        int i,j;
+        Lista lista = inicio, maior = lista;
+        lista = lista.getProx();
+
+        //Encontra o maior valor
+        while(lista!=null){
+            if(lista.getInfo() > maior.getInfo())
+                maior = lista;
+            lista = lista.getProx();
+        }
+
+        //Vetor destinado a contagem de cada elemento
+        int[] contagem = new int[maior.getInfo()];
+        lista = inicio;
+
+        //Adicionando a quantidade de vezes que o elemento aparece no lugar
+        while(lista!=null){
+            contagem[lista.getInfo() - 1] = contagem[lista.getInfo() - 1]+1;
+            lista = lista.getProx();
+        }
+
+        //Fazendo somatorio dentro do vetor
+        for(i=1;i<contagem.length;i++)
+            contagem[i] = contagem[i]+contagem[i-1];
+
+        //Cria um vetor do tamanho da lista
+        int[] grandeVetor = new int[retornaTam(inicio)];
+
+        //Vai posicionando cada elemento em seu respectivo lugar em vetorGrande
+        lista = retornaFimLista(inicio);
+        while(lista!=null){
+            grandeVetor[contagem[lista.getInfo()-1]-1] = lista.getInfo();
+            contagem[lista.getInfo()-1] = contagem[lista.getInfo()-1]-1;
+            lista=lista.getAnt();
+        }
+        for(i=0,lista=inicio;lista!=null;i++,lista=lista.getProx())
+            lista.setInfo(grandeVetor[i]);
+
     }
 
 
