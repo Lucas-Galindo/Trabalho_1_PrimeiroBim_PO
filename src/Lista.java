@@ -351,6 +351,41 @@ public class Lista {
             quickSP(j+1,fim);
     }
 
+    public void quickComPivo(){
+        quickP(0,retornaTam(inicio)-1);
+    }
+    public void quickP(int ini, int fim){
+        int i = ini, j = fim, pivo = (ini+fim)/2;
+        int aux;
+        Lista listaI = new Lista();
+        Lista listaJ = new Lista();
+        Lista listaPivo = new Lista();
+        while(i<j){
+
+            listaI = posicionaLista(0,i,inicio);
+            listaJ = posicionaLista(0,j,inicio);
+            listaPivo = posicionaLista(0,pivo,inicio);
+            while(listaI.getInfo()<listaPivo.getInfo()){
+                i++;
+                listaI = posicionaLista(0,i,inicio);
+            }
+            while(listaJ.getInfo()>listaPivo.getInfo()){
+                j--;
+                listaJ = posicionaLista(0,j,inicio);
+            }
+            if(i<=j){
+                aux = posicionaLista(0,i,inicio).getInfo();
+                listaI.setInfo(listaJ.getInfo());
+                listaJ.setInfo(aux);
+                i++;
+                j--;
+            }
+            if(ini<j)
+                quickP(ini,j);
+            if(i<fim)
+                quickP(i,fim);
+        }
+    }
     public void countingSort(){
         int i,j;
         Lista lista = inicio, maior = lista;
