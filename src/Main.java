@@ -26,6 +26,9 @@ public void chamaOrdenacao(char opcao, int[] vetor){
         case 'G':
             lista.shellsort();
             break;
+        case 'I':
+            lista.quickSemPivo();
+            break;
         case 'M':
             lista.countingSort();
             break;

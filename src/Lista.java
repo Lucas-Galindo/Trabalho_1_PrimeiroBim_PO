@@ -303,7 +303,6 @@ public class Lista {
                     aux = pInicio.getInfo();
                     pInicio.setInfo(pInicio.getProx().getInfo());
                     pInicio.getProx().setInfo(aux);
-                    // Corrigido: estava faltando; sem isso o laco externo encerrava apos 1 passagem
                     flag = true;
                 }
                 pInicio = pInicio.getProx();
@@ -311,6 +310,45 @@ public class Lista {
             pFim = pFim.getAnt();
 
         }
+    }
+
+    public void quickSemPivo(){
+        quickSP(0,retornaTam(inicio)-1);
+    }
+    public void quickSP(int ini, int fim){
+        int i = ini, j = fim;
+        Lista listaI = new Lista();
+        Lista listaJ = new Lista();
+        boolean flag = true;
+        while(i<j){
+
+            listaI = posicionaLista(0,i,inicio);
+            listaJ = posicionaLista(0,j,inicio);
+            if(flag)
+            {
+                while(i<j && listaI.getInfo() <= listaJ.getInfo())
+                {
+                    i++;
+                    listaI = posicionaLista(0,i,inicio);
+                }
+
+            }
+            else {
+                while(i<j && listaI.getInfo() <= listaJ.getInfo())
+                {
+                    j--;
+                    listaJ = posicionaLista(0,j,inicio);
+                }
+            }
+            int aux = listaI.getInfo();
+            listaI.setInfo(listaJ.getInfo());
+            listaJ.setInfo(aux);
+            flag = !flag;
+        }
+        if(ini < i-1)
+            quickSP(ini,i-1);
+        if(j+1<fim)
+            quickSP(j+1,fim);
     }
 
     public void countingSort(){
