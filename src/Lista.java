@@ -100,17 +100,7 @@ public class Lista {
         return posInicio;
     }
 
-    public Lista posicionaLista(int posInicial, int posDesejada, Lista lista){
-        int posAtual = posInicial;
-        //Lista lista = cabeca;
 
-        while(posAtual < posDesejada && lista != null){
-            posAtual++;
-            lista = lista.getProx();
-        }
-
-        return lista;
-    }
 
     public void selecaoDireta(){
 
@@ -180,18 +170,6 @@ public class Lista {
 
     }
 
-    public int retornaPosLista(Lista procurado){
-        Lista lista = inicio;
-        int pos = 0;
-        while(lista != null && lista != procurado){
-            lista = lista.getProx();
-            pos++;
-        }
-        if(lista == procurado)
-            return pos;
-        return -1;
-
-    }
 
     public void shellsort(){
         int pos, pos_dist, dist = 1,ele;
@@ -222,18 +200,7 @@ public class Lista {
         }
     }
 
-    public Lista buscaExaustiva(int chave){
-        Lista lista = inicio;
-        while(lista!=null && lista.getInfo()!=chave)
-            lista = lista.getProx();
-        if(lista.getInfo()==chave)
-            return lista;
-        return null;
-    }
 
-    public boolean nula(Lista lista){
-        return lista == null;
-    }
     public void heap(){
       int posFim, tl = retornaTam(inicio);
       posFim = tl;
@@ -278,14 +245,6 @@ public class Lista {
 
 
     }
-    public Lista retornaFimLista(Lista lista){
-        Lista ant = null;
-        while(lista!=null){
-            ant = lista;
-            lista = lista.getProx();
-        }
-        return ant;
-    }
 
 
     public void bolha(){
@@ -311,6 +270,56 @@ public class Lista {
             pFim = pFim.getAnt();
 
         }
+    }
+
+
+    public Lista posicionaLista(int posInicial, int posDesejada, Lista lista){
+        int posAtual = posInicial;
+        //Lista lista = cabeca;
+
+        while(posAtual < posDesejada && lista != null){
+            posAtual++;
+            lista = lista.getProx();
+        }
+
+        return lista;
+    }
+
+    public int retornaPosLista(Lista procurado){
+        Lista lista = inicio;
+        int pos = 0;
+        while(lista != null && lista != procurado){
+            lista = lista.getProx();
+            pos++;
+        }
+        if(lista == procurado)
+            return pos;
+        return -1;
+
+    }
+
+
+    public Lista retornaFimLista(Lista lista){
+        Lista ant = null;
+        while(lista!=null){
+            ant = lista;
+            lista = lista.getProx();
+        }
+        return ant;
+    }
+
+
+    public Lista buscaExaustiva(int chave){
+        Lista lista = inicio;
+        while(lista!=null && lista.getInfo()!=chave)
+            lista = lista.getProx();
+        if(lista.getInfo()==chave)
+            return lista;
+        return null;
+    }
+
+    public boolean nula(Lista lista){
+        return lista == null;
     }
 
 
