@@ -32,7 +32,13 @@ public void chamaOrdenacao(char opcao, int[] vetor){
         case 'I':
             lista.quickSemPivo();
             break;
-        case 'M':
+        case 'J':
+            lista.mergeSort1();
+            break;
+        case 'K':
+            lista.mergeSort2();
+            break;
+        case 'L':
             lista.countingSort();
             break;
 
@@ -59,15 +65,14 @@ void main(){
         System.out.println("G...Shell Sort");
         System.out.println("H...Quick");
         System.out.println("I...Quick com pivo");
-        System.out.println("J...Fusao Direta");
-        System.out.println("K...Merge");
-        System.out.println("L...Merge");
-        System.out.println("M...CoutingSort");
-        System.out.println("N...Bucket");
-        System.out.println("O...Radix");
-        System.out.println("P...Comb");
-        System.out.println("Q...Gnome");
-        System.out.println("R...Tim");
+        System.out.println("J...Merge 1");
+        System.out.println("K...Merge 2");
+        System.out.println("L...CoutingSort");
+        System.out.println("M...Bucket");
+        System.out.println("N...Radix");
+        System.out.println("O...Comb");
+        System.out.println("P...Gnome");
+        System.out.println("Q...Tim");
         System.out.println("0...Sair");
         System.out.println("Opcao: ");
         opcao = input.next().charAt(0);

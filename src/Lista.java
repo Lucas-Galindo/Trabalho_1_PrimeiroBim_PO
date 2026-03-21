@@ -399,6 +399,144 @@ public class Lista {
         }
     }
 
+    // particao precisa receber seq para distribuir segmentos corretamente
+    public void particao(Lista lista1, Lista lista2, int seq){
+        int i = 0, j = 0;
+        Lista inicio1 = lista1;
+        Lista inicio2 = lista2;
+        int tl = retornaTam(inicio);
+        int pos = 0;
+        boolean paraLista1 = true;
+
+        // Distribui segmentos alternadamente: seg0→lista1, seg1→lista2, seg2→lista1...
+        while(pos < tl){
+            int fim = Math.min(pos + seq, tl);
+            if(paraLista1){
+                for(int x = pos; x < fim; x++, i++)
+                    posicionaLista(0, i, inicio1).setInfo(posicionaLista(0, x, inicio).getInfo());
+            } else {
+                for(int x = pos; x < fim; x++, j++)
+                    posicionaLista(0, j, inicio2).setInfo(posicionaLista(0, x, inicio).getInfo());
+            }
+            pos = fim;
+            paraLista1 = !paraLista1;
+        }
+    }
+
+    public void fusao(Lista lista1, Lista lista2, int seq){
+        int i=0, j=0, k=0, t_seq=seq;
+        int tl = retornaTam(inicio);
+        Lista principal;
+        Lista inicio1 = lista1;
+        Lista inicio2 = lista2;
+
+        while(k < tl){
+            int lim_i = i + t_seq; // ✅ limite fixo por par de segmentos
+            int lim_j = j + t_seq;
+
+            while(i < lim_i && j < lim_j && k < tl){
+                Lista n1 = posicionaLista(0, i, inicio1);
+                Lista n2 = posicionaLista(0, j, inicio2);
+                // Integer.MAX_VALUE é sentinela: posição vazia sempre perde
+                int v1 = (n1 != null) ? n1.getInfo() : Integer.MAX_VALUE;
+                int v2 = (n2 != null) ? n2.getInfo() : Integer.MAX_VALUE;
+                if(v1 == Integer.MAX_VALUE && v2 == Integer.MAX_VALUE) break;
+                if(v1 < v2){
+                    principal = posicionaLista(0, k, inicio);
+                    principal.setInfo(v1);
+                    i++;
+                } else {
+                    principal = posicionaLista(0, k, inicio);
+                    principal.setInfo(v2);
+                    j++;
+                }
+                k++;
+            }
+
+            while(i < lim_i && k < tl){
+                Lista n1 = posicionaLista(0, i, inicio1);
+                if(n1 == null || n1.getInfo() == Integer.MAX_VALUE) break;
+                principal = posicionaLista(0, k, inicio);
+                principal.setInfo(n1.getInfo());
+                k++; i++;
+            }
+
+            while(j < lim_j && k < tl){
+                Lista n2 = posicionaLista(0, j, inicio2);
+                if(n2 == null || n2.getInfo() == Integer.MAX_VALUE) break;
+                principal = posicionaLista(0, k, inicio);
+                principal.setInfo(n2.getInfo());
+                k++; j++;
+            }
+
+            i = lim_i; // ✅ avança para o próximo par de segmentos
+            j = lim_j;
+        }
+    }
+
+    private Lista criaNosVazios(int tam){
+        Lista cabeca = new Lista(Integer.MAX_VALUE, null, null); // ✅ sentinela
+        Lista aux = cabeca;
+        for(int i = 1; i < tam; i++){
+            Lista novo = new Lista(Integer.MAX_VALUE, null, aux);
+            aux.setProx(novo);
+            aux = novo;
+        }
+        return cabeca;
+    }
+
+    public void mergeSort1(){
+        int tl = retornaTam(inicio);
+        Lista lista1 = criaNosVazios(tl); // ✅ tamanho total
+        Lista lista2 = criaNosVazios(tl);
+        int seq = 1;
+        while(seq < tl){
+            particao(lista1, lista2, seq); // ✅ passa seq
+            fusao(lista1, lista2, seq);
+            seq = seq * 2;
+        }
+    }
+
+    public void mergeSort2(){
+        int tl = retornaTam(inicio);
+        Lista aux = criaNosVazios(tl);   // equivale ao criaList()
+        mergeS(aux, 0, tl - 1);
+    }
+
+    private void mergeS(Lista aux, int esq, int dir){
+        int meio;
+        if(esq < dir){
+            meio = (esq + dir) / 2;
+            mergeS(aux, esq, meio);
+            mergeS(aux, meio + 1, dir);
+            fusao(aux, esq, meio, meio + 1, dir);
+        }
+    }
+
+    //Funcao sobrecarga
+    private void fusao(Lista aux, int ini1, int fim1, int ini2, int fim2){
+        int a = 0, i = ini1, j = ini2;
+        Lista auxInicio = aux;           // guarda a cabeça de aux para navegar
+
+        while(i <= fim1 && j <= fim2){
+            if(posicionaLista(0, i, inicio).getInfo() < posicionaLista(0, j, inicio).getInfo())
+                posicionaLista(0, a++, auxInicio).setInfo(posicionaLista(0, i++, inicio).getInfo());
+            else
+                posicionaLista(0, a++, auxInicio).setInfo(posicionaLista(0, j++, inicio).getInfo());
+        }
+
+        while(i <= fim1)
+            posicionaLista(0, a++, auxInicio).setInfo(posicionaLista(0, i++, inicio).getInfo());
+
+        while(j <= fim2)
+            posicionaLista(0, a++, auxInicio).setInfo(posicionaLista(0, j++, inicio).getInfo());
+
+        for(int k = 0; k < a; k++)
+            posicionaLista(0, k + ini1, inicio).setInfo(posicionaLista(0, k, auxInicio).getInfo());
+    }
+
+
+
 
     public void countingSort(){
         int i,j;
