@@ -62,14 +62,6 @@ public class Lista {
         }
     }
 
-    public int retornaTam(Lista lista){
-        int qtde = 0;
-        while(lista!=null){
-            lista = lista.getProx();
-            qtde++;
-        }
-        return qtde;
-    }
 
     public void InsercaoBinaria(){
         int tam = retornaTam(inicio);
@@ -93,9 +85,12 @@ public class Lista {
         while(posInicio <= posFim){
             posMeio = (posInicio + posFim) / 2;
             Lista nodo = posicionaLista(0, posMeio, inicio);
-            if(nodo.getInfo() == aux)   return posMeio;
-            else if(aux < nodo.getInfo()) posFim = posMeio - 1;
-            else                          posInicio = posMeio + 1;
+            if(nodo.getInfo() == aux)
+                return posMeio;
+            else if(aux < nodo.getInfo())
+                posFim = posMeio - 1;
+            else
+                posInicio = posMeio + 1;
         }
         return posInicio;
     }
@@ -128,6 +123,30 @@ public class Lista {
             menor.setInfo(tmp);
         }
     }
+
+//    //Releitura de selecaoDireta
+//    public void SelecaoDireta(){
+//        int menor;
+//        Lista lista = inicio,aux,posMenor;
+//        while(lista.getProx() != null){
+//            menor = lista.getInfo();
+//            posMenor = lista;
+//            aux = lista.getProx();
+//            while(aux.getProx() != null){
+//                if(aux.getInfo() < menor) {
+//                    // O da frente é menor que o de tras?
+//                    menor = aux.getInfo();
+//                    posMenor = aux;
+//                }
+//                aux.getProx();
+//            }
+//
+//            posMenor.setInfo(lista.getInfo());
+//            lista.setInfo(menor);
+//
+//            lista.getProx();
+//        }
+//    }
 
 
     //Essa ordenação funciona somente para casos em que se SABE a PRIORI a qual
@@ -170,6 +189,40 @@ public class Lista {
 
     }
 
+
+//    public void ShakeSort(){
+//        int aux;
+//        Lista ini = inicio, fim = retornaFimLista(inicio);
+//        boolean flag = true;
+//        while(ini != fim && flag){
+//            flag = false;
+//            Lista atual = ini;
+//            while(atual != fim){
+//                if(atual.getInfo() > atual.getProx().getInfo()){
+//                    aux = atual.getInfo();
+//                    atual.setInfo(atual.getProx().getInfo());
+//                    atual.getProx().setInfo(aux);
+//                    flag= true;
+//                }
+//                atual = atual.getProx();
+//            }
+//            fim = fim.getAnt();
+//
+//            if(flag){
+//                atual = fim;
+//                while(atual != ini ){
+//                    if(atual.getInfo()< atual.getAnt().getInfo()){
+//                        aux = atual.getInfo();
+//                        atual.setInfo(atual.getAnt().getInfo());
+//                        atual.getAnt().setInfo(aux);
+//                        flag = true;
+//                    }
+//                    atual = atual.getAnt();
+//                }
+//                ini = ini.getProx();
+//            }
+//        }
+//    }
 
     public void shellsort(){
         int pos, pos_dist, dist = 1,ele;
@@ -345,6 +398,8 @@ public class Lista {
                 quickP(i,fim);
         }
     }
+
+
     public void countingSort(){
         int i,j;
         Lista lista = inicio, maior = lista;
@@ -385,7 +440,262 @@ public class Lista {
             lista.setInfo(grandeVetor[i]);
 
     }
-//Teste
+
+
+    public void combSort(){
+        int TL = retornaTam(inicio);
+        int mov = TL, aux;
+        boolean troca = true;
+        Lista listaI, listaJ;
+
+        while(troca || mov > 1){
+            if(mov > 1)
+                mov = (int)(mov / 1.3);
+
+            troca = false;
+
+            for(int i = 0; i + mov < TL; i++){
+                listaI = posicionaLista(0,i,inicio);
+                listaJ = posicionaLista(0,i+mov,inicio);
+
+                if(listaI.getInfo() > listaJ.getInfo()){
+                    aux = listaI.getInfo();
+                    listaI.setInfo(listaJ.getInfo());
+                    listaJ.setInfo(aux);
+                    troca = true;
+                }
+            }
+        }
+    }
+
+    public void radixSort(){
+        int maior = buscaMaior();
+
+        for(int exp = 1; maior/exp > 0; exp *= 10)
+            counting(exp);
+    }
+
+    public void counting(int exp){
+        int i, TL = retornaTam(inicio);
+        int[] aux = new int[TL];
+        int[] cont = new int[10];
+        Lista nodo;
+
+        for(i = 0; i < 10; i++)
+            cont[i] = 0;
+
+        for(i = 0; i < TL; i++){
+            nodo = posicionaLista(0,i,inicio);
+            cont[(nodo.getInfo() / exp) % 10]++;
+        }
+
+        for(i = 1; i < 10; i++)
+            cont[i] = cont[i] + cont[i - 1];
+
+        for(i = TL - 1; i >= 0; i--){
+            nodo = posicionaLista(0,i,inicio);
+            aux[cont[(nodo.getInfo() / exp) % 10] - 1] = nodo.getInfo();
+            cont[(nodo.getInfo() / exp) % 10]--;
+        }
+
+        for(i = 0; i < TL; i++){
+            nodo = posicionaLista(0,i,inicio);
+            nodo.setInfo(aux[i]);
+        }
+    }
+
+
+    public void bucketSort(){
+        int TL = retornaTam(inicio);
+        int numBuckets = 5;
+        int[][] buckets = new int[numBuckets][TL];
+        int[] bucketSizes = new int[numBuckets];
+        Lista aux = inicio;
+        int maior = buscaMaior();
+
+        while(aux != null){
+            int index = (int)((aux.getInfo() / (double) maior) * numBuckets);
+
+            if(index >= numBuckets)
+                index = numBuckets - 1;
+
+            buckets[index][bucketSizes[index]] = aux.getInfo();
+            bucketSizes[index]++;
+            aux = aux.getProx();
+        }
+
+        for(int i = 0; i < numBuckets; i++)
+            insercaoDiretaBucket(buckets[i], bucketSizes[i]);
+
+        aux = inicio;
+        for(int i = 0; i < numBuckets; i++){
+            for(int j = 0; j < bucketSizes[i]; j++){
+                aux.setInfo(buckets[i][j]);
+                aux = aux.getProx();
+            }
+        }
+    }
+
+
+    public void insercaoDiretaBucket(int[] vet, int tl){
+        int i, j, aux;
+        for(i = 1; i < tl; i++){
+            aux = vet[i];
+            j = i - 1;
+            while(j >= 0 && aux < vet[j]){
+                vet[j + 1] = vet[j];
+                j--;
+            }
+            vet[j + 1] = aux;
+        }
+    }
+
+
+
+    public void insereTim(int left, int right){
+        int aux, j;
+        Lista nodoI, nodoJ, nodoJ1;
+
+        for(int i = left + 1; i <= right; i++){
+            nodoI = posicionaLista(0,i,inicio);
+            aux = nodoI.getInfo();
+            j = i - 1;
+
+            while(j >= left){
+                nodoJ = posicionaLista(0,j,inicio);
+                if(nodoJ.getInfo() > aux){
+                    nodoJ1 = posicionaLista(0,j + 1,inicio);
+                    nodoJ1.setInfo(nodoJ.getInfo());
+                    j--;
+                }
+                else
+                    break;
+            }
+
+            nodoJ1 = posicionaLista(0,j + 1,inicio);
+            nodoJ1.setInfo(aux);
+        }
+    }
+
+
+
+
+    public void timSort(){
+        int TL = retornaTam(inicio);
+        int run = 32;
+        int mid, right;
+
+        for(int i = 0; i < TL; i += run){
+            insereTim(i, Math.min(i + 31, TL - 1));
+        }
+
+        for(int tam = run; tam < TL; tam = 2 * tam){
+            for(int esq = 0; esq < TL; esq += 2 * tam){
+                mid = esq + tam - 1;
+                right = Math.min(esq + 2 * tam - 1, TL - 1);
+
+                if(mid < right)
+                    merge(esq, mid, right);
+            }
+        }
+    }
+
+    public void merge(int esq, int meio, int dir){
+        int tam1 = meio - esq + 1;
+        int tam2 = dir - meio;
+        int[] vet1 = new int[tam1];
+        int[] vet2 = new int[tam2];
+        Lista nodo;
+        int i, j, k;
+
+        for(i = 0; i < tam1; i++){
+            nodo = posicionaLista(0, esq + i, inicio);
+            vet1[i] = nodo.getInfo();
+        }
+
+        for(i = 0; i < tam2; i++){
+            nodo = posicionaLista(0, meio + 1 + i, inicio);
+            vet2[i] = nodo.getInfo();
+        }
+
+        i = 0;
+        j = 0;
+        k = esq;
+
+        while(i < tam1 && j < tam2){
+            nodo = posicionaLista(0, k, inicio);
+
+            if(vet1[i] <= vet2[j]){
+                nodo.setInfo(vet1[i]);
+                i++;
+            }
+            else{
+                nodo.setInfo(vet2[j]);
+                j++;
+            }
+            k++;
+        }
+
+        while(i < tam1){
+            nodo = posicionaLista(0, k, inicio);
+            nodo.setInfo(vet1[i]);
+            i++;
+            k++;
+        }
+
+        while(j < tam2){
+            nodo = posicionaLista(0, k, inicio);
+            nodo.setInfo(vet2[j]);
+            j++;
+            k++;
+        }
+    }
+
+    public void gnomeSort(){
+        int TL = retornaTam(inicio);
+        int i = 1, aux;
+        Lista nodoI, nodoAnt;
+
+        while(i < TL){
+            nodoI = posicionaLista(0,i,inicio);
+            nodoAnt = posicionaLista(0,i-1,inicio);
+
+            if(i != 0 && nodoI.getInfo() < nodoAnt.getInfo()){
+                aux = nodoI.getInfo();
+                nodoI.setInfo(nodoAnt.getInfo());
+                nodoAnt.setInfo(aux);
+                i--;
+            }
+            else
+                i++;
+        }
+    }
+
+
+
+    public int buscaMaior(){
+        int TL = retornaTam(inicio);
+        int maior = inicio.getInfo();
+        Lista nodo;
+
+        for(int i = 1; i < TL; i++){
+            nodo = posicionaLista(0,i,inicio);
+            if(nodo.getInfo() > maior)
+                maior = nodo.getInfo();
+        }
+
+        return maior;
+    }
+
+
+    public int retornaTam(Lista lista){
+        int qtde = 0;
+        while(lista!=null){
+            lista = lista.getProx();
+            qtde++;
+        }
+        return qtde;
+    }
 
     public Lista posicionaLista(int posInicial, int posDesejada, Lista lista){
         int posAtual = posInicial;
