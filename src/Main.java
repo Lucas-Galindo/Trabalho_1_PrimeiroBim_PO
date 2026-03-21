@@ -41,6 +41,21 @@ public void chamaOrdenacao(char opcao, int[] vetor){
         case 'L':
             lista.countingSort();
             break;
+        case 'M':
+            lista.bucketSort();
+            break;
+        case 'N':
+            lista.radixSort();
+            break;
+        case 'O':
+            lista.combSort();
+            break;
+        case 'P':
+            lista.gnomeSort();
+            break;
+        case 'Q':
+            lista.timSort();
+            break;
 
     }
     lista.exibirLista();
