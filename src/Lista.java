@@ -487,11 +487,11 @@ public class Lista {
 
     public void mergeSort1(){
         int tl = retornaTam(inicio);
-        Lista lista1 = criaNosVazios(tl); // ✅ tamanho total
+        Lista lista1 = criaNosVazios(tl);
         Lista lista2 = criaNosVazios(tl);
         int seq = 1;
         while(seq < tl){
-            particao(lista1, lista2, seq); // ✅ passa seq
+            particao(lista1, lista2, seq);
             fusao(lista1, lista2, seq);
             seq = seq * 2;
         }
@@ -788,6 +788,7 @@ public class Lista {
             k++;
         }
     }
+
 
     public void gnomeSort(){
         int TL = retornaTam(inicio);
